@@ -1,3 +1,7 @@
+// ============================================================
+// Sara Sweets Website JS - Full Updated Version
+// ============================================================
+
 const el = (id) => document.getElementById(id);
 const randId = () => "p" + Math.random().toString(36).slice(2, 9);
 
@@ -11,7 +15,9 @@ function loadProducts() {
   try { return JSON.parse(raw); } catch { return []; }
 }
 
-function saveProducts(arr) { localStorage.setItem("sara_products", JSON.stringify(arr)); }
+function saveProducts(arr) {
+  localStorage.setItem("sara_products", JSON.stringify(arr));
+}
 
 function renderProducts() {
   const grid = el("productGrid");
@@ -82,7 +88,7 @@ adminLogoutBtn.addEventListener("click", () => {
   document.body.style.overflow = "auto";
 });
 
-// Add product
+// ---------- ADD PRODUCT ----------
 el("productForm").addEventListener("submit", (e) => {
   e.preventDefault();
   if (!isAdmin) return alert("⚠️ Only admin can add products.");
@@ -101,15 +107,19 @@ el("productForm").addEventListener("submit", (e) => {
     const arr = loadProducts();
     arr.unshift({ id: randId(), name, nameAr, price, img: ev.target.result, desc, descAr });
     saveProducts(arr);
+
+    // Show products for everyone immediately
     renderProducts();
     renderAdminProducts();
+
+    // Reset form
     e.target.reset();
     el("previewImg").classList.add("hidden");
   };
   reader.readAsDataURL(imgFile);
 });
 
-// Preview image
+// Preview image before adding
 el("pImageUpload").addEventListener("change", (e) => {
   const file = e.target.files[0];
   if (file) {
@@ -122,7 +132,7 @@ el("pImageUpload").addEventListener("change", (e) => {
   }
 });
 
-// Render admin products
+// Render products in admin panel
 function renderAdminProducts() {
   const box = el("adminProducts");
   const arr = loadProducts();
@@ -165,7 +175,7 @@ const translations = {
     productsTitle: "Our Specialties",
     galleryTitle: "Gallery",
     contactTitle: "Visit Us",
-    contactDesc: "123 Sweet Lane, Flavor Town — Open 9:00 AM to 9:00 PM",
+    contactDesc: "Ahmad Ibn Ghalib, Jarir, Riyadh 12833, Saudi Arabia  11:30 AM - 11:30 PM, Sun - Thu and 1:00 PM - 12:00 AM, Fri",
     footerText: "© Sara Sweets • Made with ❤️"
   },
   ar: {
@@ -179,11 +189,12 @@ const translations = {
     productsTitle: "تخصصاتنا",
     galleryTitle: "المعرض",
     contactTitle: "زرونا",
-    contactDesc: "123 شارع الحلويات، مدينة النكهات — مفتوح من 9 صباحًا حتى 9 مساءً",
+    contactDesc: "أحمد بن غالب، جرير، الرياض 12833، المملكة العربية السعودية  11:30 صباحاً - 11:30 مساءً، الأحد - الخميس و 1:00 مساءً - 12:00 صباحاً، الجمعة",
     footerText: "© سارة للحلويات • صُنع بحب ❤️"
   }
 };
 
+// On page load
 document.addEventListener("DOMContentLoaded", () => {
   el("translateBtn").addEventListener("click", () => {
     lang = lang === "en" ? "ar" : "en";
@@ -196,10 +207,12 @@ document.addEventListener("DOMContentLoaded", () => {
   el("year").textContent = new Date().getFullYear();
 });
 
+// Apply translations
 function applyTranslations() {
   const t = translations[lang];
   document.documentElement.lang = lang;
   document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
+
   el("brand-title").textContent = t.brandTitle;
   el("brand-sub").textContent = t.brandSub;
   el("hero-title").textContent = t.heroTitle;
@@ -212,5 +225,6 @@ function applyTranslations() {
   el("contact-title").textContent = t.contactTitle;
   el("contact-desc").textContent = t.contactDesc;
   el("footer-text").textContent = t.footerText;
-  renderProducts();
+
+  renderProducts(); // Update product names/descriptions
 }
