@@ -54,7 +54,7 @@ const adminPassword = el("adminPassword");
 const panelContent = el("panelContent");
 const loginPane = el("loginPane");
 const adminLogoutBtn = el("adminLogoutBtn");
-let isAdmin = false;
+let isAdmin = true;
 
 // Open admin overlay
 el("adminOpenBtn").addEventListener("click", () => {
